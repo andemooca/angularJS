@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
-import { HEROES } from '../mock-heroes';
+// import { HEROES } from '../mock-heroes';
+import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-heroes',
@@ -10,10 +11,17 @@ import { HEROES } from '../mock-heroes';
 export class HeroesComponent implements OnInit {
 
   //Lista de herois (mock)
-  heroes = HEROES;
+  // heroes = HEROES;
 
   //Atribui as propriedades da classe heroi para selectedHero (hero selecionado)
   selectedHero : Hero;
+
+  heroes: Hero[];
+  constructor(private heroService: HeroService) { }
+
+  ngOnInit() {
+    this.getHeroes();
+  }
 
   //Exemplo de valores setados e enviados para a tela.
   // hero: Hero = {
@@ -21,17 +29,18 @@ export class HeroesComponent implements OnInit {
   //   name : 'Windstorm'
   // };
 
-  //
-  
-  constructor() { }
-
-  ngOnInit() {
-  }
-
   //Método que recebe um heroi ( click na tela )
   onSelect(hero : Hero): void{
-    //console.log(hero.id+": "+ hero.name);
     this.selectedHero = hero;
-    console.log(this.selectedHero);
   }
+
+  // getHeroes(): void {
+  //   this.heroes = this.heroService.getHeroes();
+  // }
+
+  getHeroes(): void {
+    this.heroService.getHeroes()
+        .subscribe(heroes => this.heroes = heroes);
+  }
+
 }
